@@ -72,37 +72,44 @@
       <option value="F">°F</option>
     </select>
     <br>
-    <button onclick="convertTemp()">Convert</button>
+    <button id="convertButton">Convert</button>
     <div class="result" id="result"></div>
   </div>
-  <script>
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
     function convertTemp() {
       // Boltzmann constant in eV/K
       const kB = 8.617333262e-5;
-      const tempInput = document.getElementById('tempInput').value;
-      const unit = document.getElementById('unitSelect').value;
-      const resultDiv = document.getElementById('result');
+      const tempInput = document.getElementById("tempInput").value;
+      const unit = document.getElementById("unitSelect").value;
+      const resultDiv = document.getElementById("result");
       const temp = parseFloat(tempInput);
-      
+
       if (isNaN(temp)) {
         resultDiv.innerText = "Please enter a valid temperature.";
         return;
       }
-      
+
       let kelvin;
-      if (unit === 'C') {
+      if (unit === "C") {
         kelvin = temp + 273.15;
-      } else if (unit === 'F') {
-        kelvin = (temp - 32) * (5/9) + 273.15;
+      } else if (unit === "F") {
+        kelvin = (temp - 32) * (5 / 9) + 273.15;
+      } else {
+        resultDiv.innerText = "Invalid unit selection.";
+        return;
       }
-      
+
       // Convert Kelvin to energy in eV (E = k_B * T)
       let energyEV = kelvin * kB;
-      // Format the result in scientific notation with 3 significant figures
       energyEV = energyEV.toExponential(3);
-      
-      resultDiv.innerHTML = Temperature in natural units: <strong>${energyEV} eV</strong>;
+
+      resultDiv.innerHTML = `Temperature in natural units: <strong>${energyEV} eV</strong>`;
     }
-  </script>
+
+    // Attach event listener instead of inline onclick
+    document.getElementById("convertButton").addEventListener("click", convertTemp);
+  });
+</script>
 </body>
 </html>
